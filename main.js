@@ -67,34 +67,20 @@ function evaluateGuess(e) {
    let correct_answer;
    let wrong_answer;
    let guess;
-
-   
-   let audio_elements = document.querySelectorAll('audio[data-key]');
-   // init valid input for guess
-   let valid_keydown_input = [];
-   audio_elements.forEach(element =>
-      valid_keydown_input.push(element.getAttribute('data-key'))
-   )
-   //check for validity of input and assign value to guess variable
-   if (e.type == 'keydown' && valid_keydown_input.includes(e.keyCode.toString()) == true) {
+   // assign value to guess variable
+   if (e.type == 'keydown') {
       guess = e.keyCode.toString();
       stop_blink;
    } else if (e.type == 'click') {
       guess = e.target.getAttribute("data-key");
-      stop_blink;
-      
-   } else {
-      alert('Ups! looks like you pressed the wrong key on your computer keyboard. Try again!');
+      stop_blink; 
    }
-   
-   // evaluate the guess
-
-   //these values of 'answers' only to be displayed for comparing user's input.
+   // these values of 'answers' only to be displayed for comparing user's input.
    correct_answer = document.
       querySelector(`.key[data-key="${test_note}"]`).getAttribute('id');
    wrong_answer = document.
       querySelector(`.key[data-key="${guess}"]`).getAttribute('id');
-   
+   // RESULT OUTPUT
    if (guess == test_note) {
       alert(`Yes, it was "${correct_answer}". Nice work!`)
    } else if (guess !== test_note) {
@@ -114,6 +100,19 @@ function playPiano(e) {
    blinkAll();
 }
 
+function validateInput(e) {
+   let audio_elements = document.querySelectorAll('audio[data-key]');
+   let valid_keydown_input = [];
+   audio_elements.forEach(element =>
+      valid_keydown_input.push(element.getAttribute('data-key'))
+   )
+   if (valid_keydown_input.includes(e.keyCode.toString()) == false) {
+      alert('invalid input at validateInput()')
+   } else {
+      playPiano(e);
+   }
+}
+
 
 window.addEventListener('click', function () { // for unwanted clicks outside of piano keyboard
    pianoKeys.forEach(item => item.focus());
@@ -123,6 +122,6 @@ const pianoKeys = document.querySelectorAll('.key');
 
 pianoKeys.forEach(item => item.addEventListener('click', playPiano));
 pianoKeys.forEach(item => item.focus());
-pianoKeys.forEach(item => item.addEventListener('keydown', playPiano))
+pianoKeys.forEach(item => item.addEventListener('keydown', validateInput));
 
 
