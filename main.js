@@ -101,6 +101,8 @@ function playPiano(e) {
 }
 
 function validateInput(e) {
+   let await_guess = document.querySelector('.blink');
+   if (!await_guess) return playPiano(e);
    let audio_elements = document.querySelectorAll('audio[data-key]');
    let valid_keydown_input = [];
    audio_elements.forEach(element =>
