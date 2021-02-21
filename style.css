@@ -1,0 +1,170 @@
+html {
+   font-size: 10px;
+   background-size: cover;
+ }
+ body,html {
+   margin: 0;
+   padding: 0;
+   font-family: sans-serif;
+ }
+ .piano {
+    position: relative;
+    margin: 0 auto;
+    width: min-content;
+    height: 20rem;
+    padding: 1.5rem 2rem;
+    background-color: rgb(17, 12, 5);
+ }
+ .felt {
+    position: absolute;
+    top: .1rem;
+    right: 0;
+    background-color: rgb(206, 15, 15);
+    height: 7px;
+    width: 100%;
+    z-index: 2;
+ }
+ /* ++++++++++++++++++ */
+ .keys.ivory {
+   height: 20rem;
+   display: flex;
+   flex: 1;
+   align-items: center;
+   justify-content: center;
+ }
+ .ivory .key {
+   border: .2rem solid rgb(155, 147, 124);
+   border-radius: .5rem;
+   margin: 0;
+   padding: 1rem .5rem;
+   transition: all .07s ease;
+   width: 4rem;
+   height: 20rem;
+   text-align: center;
+   color: grey;
+   background: rgb(243, 242, 237);
+   text-shadow: 0 0 .5rem black;
+ }
+ /* ++++++++++++++++++++ */
+ .keys.ebony {
+   height: min-content;
+   overflow: visible;
+   position: absolute;
+   top: .5rem;
+   right: 4.5rem;
+   display: flex;
+   flex: 1;
+   align-items: center;
+   justify-content: center;
+ }
+ .ebony .key {
+   border: .2rem solid rgb(109, 105, 105);
+   border-radius: .5rem;
+   margin: 0 1.1rem;
+   padding: 0rem .5rem;
+   transition: all .07s ease;
+   width: 2rem;
+   height: 14rem;
+   text-align: center;
+   color: grey;
+   background: rgb(24, 23, 23);
+   text-shadow: 0 0 .5rem black;
+ }
+ .ebony .margin-right {
+   margin-right: 5.7rem;
+ }
+ .ebony .margin-left {
+   margin-left: 1.6rem;
+ }
+ /* ++++++++++++++++++++++++  */
+  .finger-down {
+   transform: scale(.97);
+ }
+ .ivory .finger-down {
+   background: rgb(230, 229, 227);
+ }
+ .ebony .finger-down {
+   background: rgb(0, 0, 0);
+ }
+ kbd {
+   display: block;
+   font-size: 1rem;
+ }
+ /* .sound {
+   font-size: 1.2rem;
+   text-transform: uppercase;
+   letter-spacing: .1rem;
+   color: #ffc600;
+ } */
+ /* +++++==========++++++ */
+.mode-selector {
+   width: 53rem;
+   min-height: 20rem;
+   margin: 0 auto;
+   padding: 3rem 1rem;
+   text-align: center;
+   background-color: rgb(219, 218, 200);
+}
+.mode-selector button {
+   font-size: 2rem;
+   color: blue;
+   padding: 1rem;
+   border: none;
+   cursor: pointer;
+}
+.key {
+   position: relative;
+   outline: none;
+}
+
+.keys .blink {
+   border: .2rem solid rgba(0, 217, 255, 0.726);
+
+   /* animation: blink-animation .5s steps(2, start) infinite;
+   -webkit-animation: blink-animation .5s steps(2, start) infinite; */
+ }
+
+ /* @keyframes blink-animation {
+   to {
+      border: .2rem solid rgb(0, 255, 200, 0.205);
+   }
+ }
+ @-webkit-keyframes blink-animation {
+   to {
+     border: .2rem solid rgb(91, 102, 100, 0.205);
+   }
+ } */
+/* .key span {
+   opacity: 0;
+   transition: none;
+}
+.key.blink span {
+   display: initial;
+   position: absolute;
+   width: 100%;
+   height: 30%;
+   border-radius: 10%;
+   opacity: 1;
+   bottom: 0rem;
+   right: 0rem;
+   font-size: 2rem;
+   color: white;
+   background: blue;
+   text-shadow: none;
+   transition: none;
+   z-index: 99;
+
+   animation: blink-animation .5s steps(5, start) infinite;
+   -webkit-animation: blink-animation .5s steps(5, start) infinite;
+ }
+
+ @keyframes blink-animation {
+   to {
+      opacity: .6;
+   }
+ }
+ @-webkit-keyframes blink-animation {
+   to {
+     opacity: .6;
+   }
+ } */

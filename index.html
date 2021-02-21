@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <link rel="stylesheet" href="style.css">
+      <title>EarTrainer</title>
+   </head>
+   <body>
+      <!-- piano keyboard -->
+      <div class="piano">
+
+         <div class='felt'></div>
+
+         <!--  -->
+         <div class='keys ivory'>
+
+            <div data-key="65" class="key" id='C' tabindex="-1">
+               <kbd>A</kbd>
+               <span></span>
+               <audio data-key="65" src="samples/C3.mp3"></audio>
+            </div>
+            
+            <div data-key="83" class="key" id='D' tabindex="-1">
+               <kbd>S</kbd>
+               <span></span>
+               <audio data-key="83" src="samples/D3.mp3"></audio>
+            </div>
+            
+            <div data-key="68" class="key" id='E' tabindex="-1">
+               <kbd>D</kbd>
+               <span></span>
+               <audio data-key="68" src="samples/E3.mp3"></audio>
+            </div>
+            
+            <div data-key="70" class="key" id='F' tabindex="-1">
+               <kbd>F</kbd>
+               <span></span>
+               <audio data-key="70" src="samples/F3.mp3"></audio>
+            </div>
+            
+            <div data-key="71" class="key" id='G' tabindex="-1">
+               <kbd>G</kbd>
+               <span></span>
+               <audio data-key="71" src="samples/G3.mp3"></audio>
+            </div>
+            
+            <div data-key="72" class="key" id='A' tabindex="-1">
+               <kbd>H</kbd>
+               <span></span>
+               <audio data-key="72" src="samples/A3.mp3"></audio>
+            </div>
+            
+            <div data-key="74" class="key" id='B' tabindex="-1">
+               <kbd>J</kbd>
+               <span></span>
+               <audio data-key="74" src="samples/B3.mp3"></audio>
+            </div>
+            
+            <div data-key="75" class="key" id='C' tabindex="-1">
+               <kbd>K</kbd>
+               <span></span>
+               <audio data-key="75" src="samples/C4.mp3"></audio>
+            </div>
+            
+            <div data-key="76" class="key" id='D' tabindex="-1">
+               <kbd>L</kbd>
+               <span></span>
+               <audio data-key="76" src="samples/D4.mp3"></audio>
+            </div>
+         </div>
+
+         <!-- -->
+         <div class='keys ebony'> 
+            <div data-key="87" class="key" id='Db' tabindex="-1">
+               <kbd>W</kbd>
+               <span></span>
+               <audio data-key="87" src="samples/Db3.mp3"></audio>
+            </div>
+            
+            <div data-key="69" class="key margin-right" id='Eb' tabindex="-1">
+               <kbd>E</kbd>
+               <span></span>
+               <audio data-key="69" src="samples/Eb3.mp3"></audio>
+            </div>
+            
+            <div data-key="84" class="key margin-left" id='Gb' tabindex="-1">
+               <kbd>T</kbd>
+               <span></span>
+               <audio data-key="84" src="samples/Gb3.mp3"></audio>
+            </div>
+            
+            <div data-key="89" class="key" id='Ab' tabindex="-1">
+               <kbd>Y</kbd>
+               <span></span>
+               <audio data-key="89" src="samples/Ab3.mp3"></audio>
+            </div>
+            
+            <div data-key="85" class="key margin-right" id='Bb' tabindex="-1">
+               <kbd>U</kbd>
+               <span></span>
+               <audio data-key="85" src="samples/Bb3.mp3"></audio>
+            </div>
+            
+            <div data-key="79" class="key margin-left" id='Db' tabindex="-1">
+               <kbd>O</kbd>
+               <audio data-key="79" src="samples/Db4.mp3"></audio>
+               <span></span>
+            </div>
+
+         </div>
+
+      </div> 
+
+      <!--  mode selector-->
+      <div class='mode-selector'>
+         <div class='played-pitch-container'>
+            <div class='played-pitch'></div>
+            <div class='played-pitch'></div>
+            <div class='played-pitch'></div>
+            <div class='played-pitch'></div>
+            <div class='played-pitch'></div>
+            <div class='played-pitch'></div>
+            <div class='played-pitch'></div>
+            <div class='played-pitch'></div>
+            <div class='played-pitch'></div>
+            <div class='played-pitch'></div>
+            <div class='played-pitch'></div>
+            <div class='played-pitch'></div>
+            <div class='played-pitch'></div>
+            <div class='played-pitch'></div>
+            <div class='played-pitch'></div>
+         </div>
+         <h1>Ear Training Practice</h1>
+         <button id='et-mode-toggle' type='button' onclick="toggleEarTrainMode()">start</button>
+      </div>  
+
+      <script src='main.js'></script>
+   </body>
+</html>
