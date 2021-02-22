@@ -1,6 +1,5 @@
 html {
-   font-size: 10px;
-   background-size: cover;
+   font-size: 11px;   
  }
  body,html {
    margin: 0;
@@ -8,16 +7,19 @@ html {
    font-family: sans-serif;
  }
  .piano {
+    font-size: 10px;
     position: relative;
     margin: 0 auto;
     width: min-content;
-    height: 20rem;
-    padding: 1.5rem 2rem;
+    height: min-content;
+    padding: .5rem .5rem;
     background-color: rgb(17, 12, 5);
+    /* background-color: rgb(231, 231, 231); */
+    border-radius: 1rem;
  }
  .felt {
     position: absolute;
-    top: .1rem;
+    top: 0;
     right: 0;
     background-color: rgb(206, 15, 15);
     height: 7px;
@@ -51,7 +53,7 @@ html {
    overflow: visible;
    position: absolute;
    top: .5rem;
-   right: 4.5rem;
+   right: 2.8rem;
    display: flex;
    flex: 1;
    align-items: center;
@@ -97,21 +99,59 @@ html {
    color: #ffc600;
  } */
  /* +++++==========++++++ */
+ .output {
+    font-size: 15px;
+    font-weight: 100;
+    width: 98%;
+    height: 20rem;
+    border-radius: 1rem;
+    margin: 0 auto;
+    /* padding: 1rem; */
+    min-height: 10rem;
+    /* text-align: center; */
+    color:rgb(95, 95, 95);
+    background-color: rgb(240, 240, 240);
+ }
+ .output h1  {
+    font-weight: 200;
+    color: rgb(39, 39, 39);
+    font-family: monospace;
+    margin: 0;
+ }
+ .wrapper {
+    width: 95%;
+    margin: 2rem auto;
+    display: flex;
+    justify-content: space-between;
+    /* background-color: red; */
+ }
+ .cont {
+    border: 1px solid rgba(128, 128, 128, 0.281);
+    padding: .5rem;
+    margin: 1%;
+    width: 32%;
+    height: 6rem;
+ }
+ .cont.logo {
+   }
 .mode-selector {
-   width: 53rem;
-   min-height: 20rem;
+   width: 100%;
+   min-height: min-content;
    margin: 0 auto;
-   padding: 3rem 1rem;
-   text-align: center;
-   background-color: rgb(219, 218, 200);
+   /* padding: 3rem 1rem; */
+   text-align: right;
+   /* background-color: rgb(219, 218, 200); */
 }
 .mode-selector button {
-   font-size: 2rem;
-   color: blue;
-   padding: 1rem;
-   border: none;
+   /* font-size: 1rem; */
+   color: rgba(0, 0, 0, 0.911);
+   /* padding: 1rem; */
+   border: 1px solid rgba(128, 128, 128, 0.109);
+   border-radius: 1rem;
    cursor: pointer;
 }
+
+
 .key {
    position: relative;
    outline: none;

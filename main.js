@@ -46,10 +46,17 @@ function blinkAll() {
    const blinking_keys = document.querySelectorAll('.key');
    setTimeout(function() {
       blinking_keys.forEach(item => item.classList.add('blink'))
-   }, 1200)
+   }, 800)
 }
 
 function toggleEarTrainMode() {
+   
+   let root = '65'; // root of the current (tonal) key
+   let muted_keys = Array.from(pianoKeys).filter(item => {
+      if (item.getAttribute('id') !== root ) {
+         return item;
+      }
+   })
    const piano = document.querySelector('.piano');
    piano.classList.toggle('et-mode');
    const button = document.getElementById('et-mode-toggle');
@@ -59,6 +66,7 @@ function toggleEarTrainMode() {
       location.reload();
    }
 }
+
 // /////////////////////////////////////////////////////////////
 function evaluateGuess(e) {
    const blinking_keys = document.querySelectorAll('.blink');
@@ -80,13 +88,13 @@ function evaluateGuess(e) {
       querySelector(`.key[data-key="${test_note}"]`).getAttribute('id');
    wrong_answer = document.
       querySelector(`.key[data-key="${guess}"]`).getAttribute('id');
+   
    // RESULT OUTPUT
    if (guess == test_note) {
       alert(`Yes, it was "${correct_answer}". Nice work!`)
    } else if (guess !== test_note) {
       alert(`"${wrong_answer}"!? Nah, it was "${correct_answer}"`)
    };
-
 }
 
 function playPiano(e) {
@@ -101,20 +109,18 @@ function playPiano(e) {
 }
 
 function validateInput(e) {
-   let await_guess = document.querySelector('.blink');
-   if (!await_guess) return playPiano(e);
    let audio_elements = document.querySelectorAll('audio[data-key]');
    let valid_keydown_input = [];
    audio_elements.forEach(element =>
       valid_keydown_input.push(element.getAttribute('data-key'))
    )
    if (valid_keydown_input.includes(e.keyCode.toString()) == false) {
-      alert('invalid input at validateInput()')
+      document.getElementById('monitor').innerHTML = "Use assigned keys to play the Piano Keyboard"
+      // alert('invalid input at validateInput()')
    } else {
       playPiano(e);
    }
 }
-
 
 window.addEventListener('click', function () { // for unwanted clicks outside of piano keyboard
    pianoKeys.forEach(item => item.focus());
