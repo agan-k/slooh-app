@@ -2,6 +2,7 @@ html {
    font-size: 11px;   
  }
  body,html {
+   height: 100%;
    margin: 0;
    padding: 0;
    font-family: sans-serif;
@@ -13,15 +14,17 @@ html {
     width: min-content;
     height: min-content;
     padding: .5rem .5rem;
-    background-color: rgb(17, 12, 5);
+    /* background-color: rgb(17, 12, 5); */
     /* background-color: rgb(231, 231, 231); */
+    background-color: rgb(192, 192, 192);
+    box-shadow: 0 2px 5px 3px grey;
     border-radius: 1rem;
  }
  .felt {
     position: absolute;
     top: 0;
     right: 0;
-    background-color: rgb(206, 15, 15);
+    background-color: rgb(134, 1, 1);
     height: 7px;
     width: 100%;
     z-index: 2;
@@ -33,6 +36,8 @@ html {
    flex: 1;
    align-items: center;
    justify-content: center;
+   background-color: rgb(41, 41, 41);
+   box-shadow: 0 15px 5px 1px black;
  }
  .ivory .key {
    border: .2rem solid rgb(155, 147, 124);
@@ -45,7 +50,7 @@ html {
    text-align: center;
    color: grey;
    background: rgb(243, 242, 237);
-   text-shadow: 0 0 .5rem black;
+   /* text-shadow: 0 0 .5rem black; */
  }
  /* ++++++++++++++++++++ */
  .keys.ebony {
@@ -58,6 +63,7 @@ html {
    flex: 1;
    align-items: center;
    justify-content: center;
+
  }
  .ebony .key {
    border: .2rem solid rgb(109, 105, 105);
@@ -70,7 +76,7 @@ html {
    text-align: center;
    color: grey;
    background: rgb(24, 23, 23);
-   text-shadow: 0 0 .5rem black;
+   /* text-shadow: 0 0 .5rem black; */
  }
  .ebony .margin-right {
    margin-right: 5.7rem;
@@ -86,7 +92,10 @@ html {
    background: rgb(230, 229, 227);
  }
  .ebony .finger-down {
-   background: rgb(0, 0, 0);
+   /* background: rgb(0, 0, 0); */
+   border-bottom: none;
+   box-shadow: 0 8px 1px rgb(0, 0, 0);
+   margin-top: -1rem;
  }
  kbd {
    display: block;
@@ -100,40 +109,75 @@ html {
  } */
  /* +++++==========++++++ */
  .output {
+    box-shadow: 0px 0px 6px 15px rgba(134, 134, 134, 0.4) inset;
+    text-shadow: 2px 1px 3px;
     font-size: 15px;
     font-weight: 100;
     width: 98%;
-    height: 20rem;
+    height: 25rem;
     border-radius: 1rem;
-    margin: 0 auto;
-    /* padding: 1rem; */
-    min-height: 10rem;
+    margin: 2rem auto 0 auto;
+    padding-top: .8rem;
+    /* min-height: 10rem; */
     /* text-align: center; */
     color:rgb(95, 95, 95);
     background-color: rgb(240, 240, 240);
- }
- .output h1  {
+   }
+   .output p {
+      text-shadow: none;
+   }
+   .output h1  {
     font-weight: 200;
-    color: rgb(39, 39, 39);
+    text-shadow: 1px 2px 3px rgba(148, 147, 147, 0.493);
+    /* color: rgba(148, 147, 147, 0.205); */
+    color: rgb(240, 240, 240);
+    
     font-family: monospace;
     margin: 0;
  }
  .wrapper {
     width: 95%;
-    margin: 2rem auto;
+    height: 47%;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
+    border-radius: 1rem;
     /* background-color: red; */
- }
- .cont {
-    border: 1px solid rgba(128, 128, 128, 0.281);
+   }
+.wrapper.one {
+   border-top: 4px solid rgba(155, 155, 155, 0.123);
+   /* height: 25%; */
+}
+.wrapper.one .cont {
+   border-bottom: 5px solid rgba(128, 128, 128, 0.1);
+   width: 33%;
+   
+}
+.wrapper.two .cont {
+   border-right: 5px solid rgba(128, 128, 128, 0.1);
+   width: 50%;
+   
+}
+.wrapper.two {
+   border-bottom: 4px solid rgba(128, 128, 128, 0.123);
+   /* height: 60%; */
+}
+.cont {
+   box-shadow: 0px 0px 10px 10px rgba(202, 202, 202, 0.1) inset;
+    border-radius: 1rem;
     padding: .5rem;
-    margin: 1%;
-    width: 32%;
-    height: 6rem;
+    margin:  0 1%;
+    height: 85%;
  }
  .cont.logo {
    }
+.controls {
+    font-weight: 300;
+    text-shadow: 1px 2px 2px rgba(110, 110, 110, 0.493);
+    /* color: rgba(148, 147, 147, 0.205); */
+    color: rgb(240, 240, 240);
+    font-family: monospace;
+}
 .mode-selector {
    width: 100%;
    min-height: min-content;
@@ -144,10 +188,13 @@ html {
 }
 .mode-selector button {
    /* font-size: 1rem; */
-   color: rgba(0, 0, 0, 0.911);
-   /* padding: 1rem; */
-   border: 1px solid rgba(128, 128, 128, 0.109);
-   border-radius: 1rem;
+   color: red;
+   text-shadow: 0 0 4px;
+   padding: .2rem 1rem;
+   box-shadow: 1px 1px 3px 1px rgba(122, 32, 32, 0.1);
+   border: none; 
+   vertical-align: text-bottom;  
+   border-radius: 5px;
    cursor: pointer;
 }
 

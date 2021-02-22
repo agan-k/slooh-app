@@ -60,8 +60,10 @@ function toggleEarTrainMode() {
    const piano = document.querySelector('.piano');
    piano.classList.toggle('et-mode');
    const button = document.getElementById('et-mode-toggle');
-   if (button.innerHTML === 'start') {
-      button.innerHTML = 'exit';
+   // console.log(getComputedStyle(button).color)
+   // debugger
+   if (getComputedStyle(button).color == 'rgb(255, 0, 0)') {
+      button.style.color = 'green';
    } else {
       location.reload();
    }
@@ -91,9 +93,11 @@ function evaluateGuess(e) {
    
    // RESULT OUTPUT
    if (guess == test_note) {
-      alert(`Yes, it was "${correct_answer}". Nice work!`)
+      // alert(`Yes, it was "${correct_answer}". Nice work!`)
+      document.getElementById('monitor').innerHTML = `Yes, it was "${correct_answer}". Nice work!`
    } else if (guess !== test_note) {
-      alert(`"${wrong_answer}"!? Nah, it was "${correct_answer}"`)
+      document.getElementById('monitor').innerHTML = `"${wrong_answer}"!? Nah, it was "${correct_answer}"`
+      // alert(`"${wrong_answer}"!? Nah, it was "${correct_answer}"`)
    };
 }
 
@@ -115,7 +119,7 @@ function validateInput(e) {
       valid_keydown_input.push(element.getAttribute('data-key'))
    )
    if (valid_keydown_input.includes(e.keyCode.toString()) == false) {
-      document.getElementById('monitor').innerHTML = "Use assigned keys to play the Piano Keyboard"
+      document.getElementById('monitor').innerHTML = "Use assigned keys to play the Piano Keyboard";
       // alert('invalid input at validateInput()')
    } else {
       playPiano(e);
