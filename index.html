@@ -96,34 +96,51 @@
 
          <div class='output'>
             <div class='wrapper one'>
-               <div class='cont logo'>
-                  <h1>slooh</h1>
+               <div class='cont'>
+                  <h3>current</h3>
+                  <h2 id='current-note'>Db</h2>
                </div>
-               <div class='cont p2'>
-                  
+               <div class='cont'>
+                  <h3>guess</h3>
+                  <h2 id='test-note'></h2>
                </div>
-               <div class='cont selector'>
+               <div class='cont'>
+                  <h3>true</h3>
+                  <h2 id='correct-note'></h2>
                </div>
+               
             </div>
+
             <div class='wrapper two'>
-               <div class='cont p1'>
-                  <p id='monitor'>Hi!</p>
+
+               <div class='cont' id='monitor'>
+                  <h1>FvsC</h1>
+                  
+                  <h3>monitor</h3>
                </div>
+
                <div class='cont selector'>
-                  <div class='mode-selector'>
+                     <h3>trainer</h3>
+                     <span class='controls'>
+                        key &nbsp;<button  class='button' id='key-toggle' 
+                        type='button' onclick="">-</button>
+                     </span>
+                     <span class='controls'>
+                        diatonic &nbsp;<button  class='button' id='diatonic-toggle' 
+                        type='button' onclick="">-</button>
+                     </span>
                      <span class='controls'>
                         ON/OFF &nbsp;<button  class='button' id='et-mode-toggle' 
                         type='button' onclick="toggleEarTrainMode()">-</button>
-      
                      </span>
-                  </div>
                </div>
             </div>
-            
+            <div class='logo'>
+               <h1 id='logo'>slooh</h1>
+               <span id='cred'>by&nbsp;<a href='https://formversuscontent.com'>FvsC</a></span>
+            </div>
          </div>  
-         <!--  mode selector-->
       </div> 
-      <!-- output -->
 
       <script src='main.js'></script>
    </body>

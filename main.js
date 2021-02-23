@@ -31,6 +31,7 @@ function pressPianoKey(e) {
          pianoKey.classList.remove('finger-down')
       }, 100);
    }
+   document.querySelector('#current-note').innerHTML = `${pianoKey.getAttribute('id')}`
 }
 
 function playRandomPitch(range) { // range is picked in accordance to level difficulty. Choices of different Node lists could unlock different levels. (diatonic, chromatic, number of octaves etc.)
@@ -39,6 +40,7 @@ function playRandomPitch(range) { // range is picked in accordance to level diff
    _TEST_NOTE = all_pitches[random_index];
    setTimeout(function () {
       _TEST_NOTE.play();
+      document.querySelector('#test-note').innerHTML = "?"
    }, 800) 
 }
 
@@ -85,6 +87,17 @@ function evaluateGuess(e) {
       guess = e.target.getAttribute("data-key");
       stop_blink; 
    }
+   let test = document.getElementById('test-note');
+   test.innerHTML = document.querySelector(`.key[data-key="${guess}"]`).getAttribute('id');
+   document.getElementById('correct-note').innerHTML = document.querySelector(`.key[data-key="${test_note}"]`).getAttribute('id');
+   // console.log(test)
+   // debugger
+   if (guess !== test_note) {
+      document.getElementById('test-note').style.color = 'red';
+   } else {
+      document.getElementById('test-note').style.color = 'green';
+      
+   }
    // these values of 'answers' only to be displayed for comparing user's input.
    correct_answer = document.
       querySelector(`.key[data-key="${test_note}"]`).getAttribute('id');
@@ -92,12 +105,19 @@ function evaluateGuess(e) {
       querySelector(`.key[data-key="${guess}"]`).getAttribute('id');
    
    // RESULT OUTPUT
+   let para = document.createElement("P");
+   let monitor = document.getElementById('monitor');
+   if (monitor.hasChildNodes()) {
+      while (monitor.firstChild) {
+         monitor.removeChild(monitor.firstChild)
+      }
+   }
    if (guess == test_note) {
-      // alert(`Yes, it was "${correct_answer}". Nice work!`)
-      document.getElementById('monitor').innerHTML = `Yes, it was "${correct_answer}". Nice work!`
+      para.innerText = `Yes, it was "${correct_answer}". Nice work!`
+      monitor.appendChild(para);
    } else if (guess !== test_note) {
-      document.getElementById('monitor').innerHTML = `"${wrong_answer}"!? Nah, it was "${correct_answer}"`
-      // alert(`"${wrong_answer}"!? Nah, it was "${correct_answer}"`)
+      para.innerText = `"${wrong_answer}"!? Nah, it was "${correct_answer}"`
+      monitor.appendChild(para);
    };
 }
 
@@ -113,15 +133,37 @@ function playPiano(e) {
 }
 
 function validateInput(e) {
+   let heading = document.createElement("H1");
+   let para = document.createElement("P");
+   let monitor = document.getElementById('monitor');
+   if (monitor.hasChildNodes()) {
+      while (monitor.firstChild) {
+         monitor.removeChild(monitor.firstChild)
+      }
+   }
+   
    let audio_elements = document.querySelectorAll('audio[data-key]');
    let valid_keydown_input = [];
    audio_elements.forEach(element =>
       valid_keydown_input.push(element.getAttribute('data-key'))
-   )
-   if (valid_keydown_input.includes(e.keyCode.toString()) == false) {
-      document.getElementById('monitor').innerHTML = "Use assigned keys to play the Piano Keyboard";
-      // alert('invalid input at validateInput()')
-   } else {
+      ) 
+      
+      if (valid_keydown_input.includes(e.keyCode.toString()) == false) {
+         para.innerText = 'Stick with the right keys, eh!'
+         monitor.appendChild(para);
+         setTimeout(function () {
+            para.remove();
+         }, 1200)
+         setTimeout(function () {
+            if (monitor.firstChild) return;
+            heading.innerText = 'slooh';
+            monitor.appendChild(heading);
+         }, 1200)
+         
+         
+      } else {
+         heading.innerText = 'slooh';
+         monitor.appendChild(heading);
       playPiano(e);
    }
 }
