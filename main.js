@@ -1,5 +1,5 @@
 function getPianoSound(e) {
-   // let pianoSound;
+   let pianoSound;
    if (e.type == 'keydown') {
       pianoSound = document.
          querySelector(`audio[data-key="${e.keyCode}"]`);
@@ -33,45 +33,104 @@ function pressPianoKey(e) {
    }
    document.querySelector('#current-note').innerHTML = `${pianoKey.getAttribute('id')}`
 }
-
+// ++++++++++++++++++
+function setRange() {
+   let range;
+   let button = document.getElementById('diatonic-toggle');
+      if (getComputedStyle(button).color == 'rgb(200, 200, 200)') {
+         range = 15;
+      } else if (getComputedStyle(button).color == 'rgb(0, 128, 0)') {
+         range = 9;
+      }
+   return range;
+}
+// +++++++++++++++++++++++++++++
 function playRandomPitch(range) { // range is picked in accordance to level difficulty. Choices of different Node lists could unlock different levels. (diatonic, chromatic, number of octaves etc.)
+   
    const random_index = Math.floor(Math.random() * Math.floor(range));
-   const all_pitches = document.querySelectorAll('audio');
-   _TEST_NOTE = all_pitches[random_index];
+   const chromatic_scale = document.querySelectorAll('audio');
+
+   const diat_keys = document.querySelectorAll('.keys.ivory .key');
+   let diatonic_data_keys = Array.from(diat_keys).map(item => item.getAttribute('data-key'))
+   let diatonic_scale = [];
+
+   for (let i = 0; i < chromatic_scale.length; i++) {
+      for (let j = 0; j < diatonic_data_keys.length; j++) {
+         if (chromatic_scale[i].getAttribute('data-key') == diatonic_data_keys[j]) {
+            diatonic_scale.push(chromatic_scale[i]);
+         }
+      }
+   }
+  
+   if (range == 15) {
+      _TEST_NOTE = chromatic_scale[random_index];
+      
+   } else if (range == 9) {
+      _TEST_NOTE = diatonic_scale[random_index];
+
+   }
    setTimeout(function () {
       _TEST_NOTE.play();
       document.querySelector('#test-note').innerHTML = "?"
    }, 800) 
 }
+// ++++++++++++++++++
+function blinkAll(on) {
 
-function blinkAll() {
    const blinking_keys = document.querySelectorAll('.key');
-   setTimeout(function() {
-      blinking_keys.forEach(item => item.classList.add('blink'))
-   }, 800)
+   if (on == 'power-on') {
+      let powerOnBlink = setInterval(() => {
+         blinking_keys.forEach(item => item.classList.add('blink'))
+         setTimeout(function () {
+            blinking_keys.forEach(item => item.classList.remove('blink'))
+         }, 50);
+      }, 150);
+      
+      setTimeout(function () {
+         clearInterval(powerOnBlink)
+      }, 400)
+     
+   } else {
+      setTimeout(function() {
+         blinking_keys.forEach(item => item.classList.add('blink'))
+      }, 800)
+   }
 }
-
-function toggleEarTrainMode() {
-   
-   let root = '65'; // root of the current (tonal) key
-   let muted_keys = Array.from(pianoKeys).filter(item => {
-      if (item.getAttribute('id') !== root ) {
-         return item;
-      }
-   })
+// +++++++++++++++++++++++
+function toggleDiatonic() {
+   let cKey = document.getElementById('C');
+   if (getComputedStyle(document.
+      getElementById('toggle-on-off')).color == 'rgb(200, 200, 200)') return;
+   let key_of = document.getElementById('key-of');
+   let button = document.getElementById('diatonic-toggle');
+   if (getComputedStyle(button).color == 'rgb(200, 200, 200)') {
+      button.style.color = 'green';
+      key_of.innerText = 'C'//in the future versions assign this to a separate toggle function
+      cKey.style.background = 'rgb(235, 218, 132)';
+      
+   } else {
+      button.style.color = 'rgb(200, 200, 200)';
+      key_of.innerText = '';
+      cKey.style.background = 'rgb(243, 242, 237)';
+   }
+}
+// +++
+function toggleOnOff() {
+   let pad1 = document.getElementById('current-note');
+   let pad2 = document.getElementById('test-note');
+   let pad3 = document.getElementById('correct-note');
+   let on = 'power-on';
    const piano = document.querySelector('.piano');
    piano.classList.toggle('et-mode');
-   const button = document.getElementById('et-mode-toggle');
-   // console.log(getComputedStyle(button).color)
-   // debugger
-   if (getComputedStyle(button).color == 'rgb(255, 0, 0)') {
-      button.style.color = 'green';
+   const button = document.getElementById('toggle-on-off');
+   if (getComputedStyle(button).color == 'rgb(200, 200, 200)') {
+      button.style.color = 'red';
+      blinkAll(on);
    } else {
       location.reload();
    }
 }
-
-// /////////////////////////////////////////////////////////////
+// +++
 function evaluateGuess(e) {
    const blinking_keys = document.querySelectorAll('.blink');
    const stop_blink = blinking_keys.forEach(item => item.classList.remove('blink'));
@@ -90,8 +149,6 @@ function evaluateGuess(e) {
    let test = document.getElementById('test-note');
    test.innerHTML = document.querySelector(`.key[data-key="${guess}"]`).getAttribute('id');
    document.getElementById('correct-note').innerHTML = document.querySelector(`.key[data-key="${test_note}"]`).getAttribute('id');
-   // console.log(test)
-   // debugger
    if (guess !== test_note) {
       document.getElementById('test-note').style.color = 'red';
    } else {
@@ -123,11 +180,14 @@ function evaluateGuess(e) {
 
 function playPiano(e) {
    if (e.repeat) return; // stop event 'keydown' from continuous fireing
-   let range = 15;// passed arg 'range' reflects size of the pool out of which random note was picked 
+   let range = setRange();// passed arg 'range' reflects size of the pool out of which random note was picked 
    if (document.querySelector('.blink')) return evaluateGuess(e); //user triggers second ('a guess') event after blinkAll() is called and thus calls evaluateGuess(e)
    getPianoSound(e);
    pressPianoKey(e);
    if (!document.querySelector('.piano.et-mode')) return; // if Ear Train mode not active, exit function
+   // setRange();
+   // console.log(range)
+   // debugger
    playRandomPitch(range); 
    blinkAll();
 }
@@ -164,7 +224,7 @@ function validateInput(e) {
       } else {
          heading.innerText = 'slooh';
          monitor.appendChild(heading);
-      playPiano(e);
+         playPiano(e);
    }
 }
 
