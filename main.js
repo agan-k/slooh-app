@@ -150,7 +150,11 @@ let keyOfArr = ['C&nbsp;', 'D&#9837;','D', 'E&#9837;', 'E', 'F', 'G&#9837;', 'G'
 function transposeKeyOf() {
    if (getComputedStyle(document.
       getElementById('diatonic-toggle')).color == 'rgb(200, 200, 200)') return;
-      
+   
+   // load samples
+
+
+   // trainer display corresponding tonalities   
    keyOfIndex += 1;
    if (keyOfIndex == keyOfArr.length) keyOfIndex = 0;
    document.getElementById('key-of').innerHTML = keyOfArr[keyOfIndex];
