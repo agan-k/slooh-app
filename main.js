@@ -1,3 +1,50 @@
+function validateInput(e) {
+   let heading = document.createElement("H1");
+   let para = document.createElement("P");
+   let monitor = document.getElementById('monitor');
+   if (monitor.hasChildNodes()) {
+      while (monitor.firstChild) {
+         monitor.removeChild(monitor.firstChild)
+      }
+   }
+   let audio_elements = document.querySelectorAll('audio[data-key]');
+   let valid_keydown_input = [];
+   audio_elements.forEach(element =>
+      valid_keydown_input.push(element.getAttribute('data-key'))
+      ) 
+      if (valid_keydown_input.includes(e.keyCode.toString()) == false) {
+         para.innerText = `
+         Use designated computer keys to play. (A, W, S, E, F...), or click 
+         on the piano keyboard.
+         `
+         monitor.appendChild(para);
+         setTimeout(function () {
+            para.remove();
+         }, 2550)
+         setTimeout(function () {
+            if (monitor.firstChild) return;
+            heading.innerText = 'slooh';
+            monitor.appendChild(heading);
+         }, 2550)
+         } else {
+         heading.innerText = 'slooh';
+         monitor.appendChild(heading);
+         playPiano(e);
+   }
+}
+
+// +++++++++++++++++++
+function playPiano(e) {
+   if (e.repeat) return; // stop event 'keydown' from continuous fireing
+   if (document.querySelector('.blink')) return evaluateGuess(e); //user triggers second ('a guess') event after blinkAll() is called and thus calls evaluateGuess(e)
+   getPianoSound(e);
+   pressPianoKey(e);
+   if (!document.querySelector('.piano.et-mode')) return; // if e-trainer mode not active, exit function
+   let range = setRange(); 
+   playRandomPitch(range); 
+   blinkAll();
+}
+
 function getPianoSound(e) {
    let pianoSound;
    if (e.type == 'keydown') {
@@ -12,6 +59,7 @@ function getPianoSound(e) {
    pianoSound.play();
 }
 
+// ++++++++++++++++++++++++
 function pressPianoKey(e) {
    let pianoKey;
    if (e.type == 'keydown') {
@@ -35,7 +83,7 @@ function pressPianoKey(e) {
 }
 // ++++++++++++++++++
 function setRange() {
-   let range;
+   let range; //range represents the pool from which test note is picked. (the pool can be chromatic, diatonic etc.)
    let button = document.getElementById('diatonic-toggle');
       if (getComputedStyle(button).color == 'rgb(200, 200, 200)') {
          range = 15;
@@ -45,7 +93,7 @@ function setRange() {
    return range;
 }
 // +++++++++++++++++++++++++++++
-function playRandomPitch(range) { // range is picked in accordance to level difficulty. Choices of different Node lists could unlock different levels. (diatonic, chromatic, number of octaves etc.)
+function playRandomPitch(range) {
    
    const random_index = Math.floor(Math.random() * Math.floor(range));
    const chromatic_scale = document.querySelectorAll('audio');
@@ -97,6 +145,25 @@ function blinkAll(on) {
    }
 }
 // +++++++++++++++++++++++
+let keyOfIndex = 0;
+let keyOfArr = ['C&nbsp;', 'D&#9837;','D', 'E&#9837;', 'E', 'F', 'G&#9837;', 'G', 'A&#9837;', 'A', 'B&#9837;', 'B'];
+function transposeKeyOf() {
+   if (getComputedStyle(document.
+      getElementById('diatonic-toggle')).color == 'rgb(200, 200, 200)') return;
+      
+   keyOfIndex += 1;
+   if (keyOfIndex == keyOfArr.length) keyOfIndex = 0;
+   document.getElementById('key-of').innerHTML = keyOfArr[keyOfIndex];
+   
+   let trans_button = document.getElementById('transpose-toggle');
+   if (keyOfIndex !== 0) {
+      trans_button.style.color = 'rgb(235, 218, 132)';
+   } else if (keyOfIndex == 0) {
+      trans_button.style.background = 'rgb(239, 239, 239)';
+   }
+
+}
+// +++++++++++++++++++++++
 function toggleDiatonic() {
    let cKey = document.getElementById('C');
    if (getComputedStyle(document.
@@ -105,20 +172,17 @@ function toggleDiatonic() {
    let button = document.getElementById('diatonic-toggle');
    if (getComputedStyle(button).color == 'rgb(200, 200, 200)') {
       button.style.color = 'green';
-      key_of.innerText = 'C'//in the future versions assign this to a separate toggle function
+      key_of.innerHTML = 'C';
       cKey.style.background = 'rgb(235, 218, 132)';
       
    } else {
       button.style.color = 'rgb(200, 200, 200)';
-      key_of.innerText = '';
+      key_of.innerHTML = '';
       cKey.style.background = 'rgb(243, 242, 237)';
    }
 }
-// +++
+// +++++++++++++++++++++
 function toggleOnOff() {
-   let pad1 = document.getElementById('current-note');
-   let pad2 = document.getElementById('test-note');
-   let pad3 = document.getElementById('correct-note');
    let on = 'power-on';
    const piano = document.querySelector('.piano');
    piano.classList.toggle('et-mode');
@@ -130,7 +194,7 @@ function toggleOnOff() {
       location.reload();
    }
 }
-// +++
+// ++++++++++++++++++++++++
 function evaluateGuess(e) {
    const blinking_keys = document.querySelectorAll('.blink');
    const stop_blink = blinking_keys.forEach(item => item.classList.remove('blink'));
@@ -176,56 +240,6 @@ function evaluateGuess(e) {
       para.innerText = `"${wrong_answer}"!? Nah, it was "${correct_answer}"`
       monitor.appendChild(para);
    };
-}
-
-function playPiano(e) {
-   if (e.repeat) return; // stop event 'keydown' from continuous fireing
-   let range = setRange();// passed arg 'range' reflects size of the pool out of which random note was picked 
-   if (document.querySelector('.blink')) return evaluateGuess(e); //user triggers second ('a guess') event after blinkAll() is called and thus calls evaluateGuess(e)
-   getPianoSound(e);
-   pressPianoKey(e);
-   if (!document.querySelector('.piano.et-mode')) return; // if Ear Train mode not active, exit function
-   // setRange();
-   // console.log(range)
-   // debugger
-   playRandomPitch(range); 
-   blinkAll();
-}
-
-function validateInput(e) {
-   let heading = document.createElement("H1");
-   let para = document.createElement("P");
-   let monitor = document.getElementById('monitor');
-   if (monitor.hasChildNodes()) {
-      while (monitor.firstChild) {
-         monitor.removeChild(monitor.firstChild)
-      }
-   }
-   
-   let audio_elements = document.querySelectorAll('audio[data-key]');
-   let valid_keydown_input = [];
-   audio_elements.forEach(element =>
-      valid_keydown_input.push(element.getAttribute('data-key'))
-      ) 
-      
-      if (valid_keydown_input.includes(e.keyCode.toString()) == false) {
-         para.innerText = 'Stick with the right keys, eh!'
-         monitor.appendChild(para);
-         setTimeout(function () {
-            para.remove();
-         }, 1200)
-         setTimeout(function () {
-            if (monitor.firstChild) return;
-            heading.innerText = 'slooh';
-            monitor.appendChild(heading);
-         }, 1200)
-         
-         
-      } else {
-         heading.innerText = 'slooh';
-         monitor.appendChild(heading);
-         playPiano(e);
-   }
 }
 
 window.addEventListener('click', function () { // for unwanted clicks outside of piano keyboard

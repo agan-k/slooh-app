@@ -51,7 +51,7 @@ html {
    /* text-shadow: 0 0 .5rem black; */
 }
 #C {
-    /* background: rgb(235, 218, 132); */
+    /* background: rgb(212, 190, 77); */
 
  }
  /* ++++++++++++++++++++ */
@@ -93,22 +93,22 @@ html {
    background: rgb(230, 229, 227);
  }
  .ebony .finger-down {
-   box-shadow: 0 14px 1px rgb(0, 0, 0);
-   height: 12.5rem;
+   box-shadow: 0 11px 1px rgb(0, 0, 0);
+   height: 14rem;
    margin-top: 0rem;
  }
  kbd {
    display: block;
    font-size: 1rem;
+   margin-top: 1rem;
  }
  .ivory kbd {
-   margin-top: 1rem;
+   margin-top: 2rem;
  }
 
  /* +++++==========++++++ */
  .output {
     box-shadow: 0px 0px 6px 15px rgba(188, 188, 188) inset;
-    /* box-shadow: 0px 0px 6px 15px rgba(77, 0, 0, 0.698) inset; */
     text-shadow: 2px 1px 3px;
     font-size: 15px;
     font-weight: 100;
@@ -117,10 +117,7 @@ html {
     border-radius: 1rem;
     margin: 2rem auto 0 auto;
     padding-top: .8rem;
-    /* min-height: 10rem; */
-    /* text-align: center; */
     color:rgb(95, 95, 95);
-    background-color: rgb(240, 240, 240);
     background-color: rgb(238, 238, 238);
    }
 
@@ -186,7 +183,7 @@ html {
  #monitor p {
    text-align: center;
    text-shadow: none;
-   margin: 10% 3%;
+   margin: 3% 3%;
    color:rgb(136, 136, 136);
    font-size: 1.3rem;
    font-weight: 600;
@@ -213,15 +210,21 @@ html {
     box-shadow: none;
     border-right: none;
     margin-right: .5rem;/* important */
-    /* margin-left: 5rem; */
     min-height: min-content;
-    text-align: right;
+    text-align: left;
     font-weight: 700;
     font-weight: 400;
-    /* text-shadow: 1px 0px 2px rgba(68, 68, 68, 0.966); */
     text-shadow: none;
-    color: rgb(235, 235, 235);
+    /* color: rgb(235, 235, 235); */
     color: rgb(197, 197, 197);
+   }
+   .cont.selector h2 {
+      line-height: 7rem;/* important */
+      letter-spacing: -1rem;/* important */
+      margin-top: 2.5rem;/* important */
+      color: rgb(235, 218, 132);
+      font-size: 3.5rem;
+      text-align: center;
    }
    .cont h3 {
       text-align: center;
@@ -241,42 +244,50 @@ html {
       top: 4.9rem;
       position: absolute;
       transform: rotate(-90deg);
-
-
-   }  
+   } 
+   .cont.selector #v-line {
+      position: absolute;
+      top: 5rem;
+      left: 7.8rem;
+      height: 1px;
+      background: grey;
+      width: 70%;
+      transform: rotate(90deg);
+      opacity: .1;
+   } 
 .controls {
    position: absolute;
-   width: 100%;
+   display: block;
    /* display: block; */
    margin-right: .5rem;
 }
 .controls.keyof {
+   text-align: center;
    top: 15%;
    right: 0%;
    opacity: .4;
    width: min-content;
+   font-family: monospace;
 }
-.controls.diatonic {
+.controls.transpose {
    font-size: 1rem;
    top: 0rem;
    right: 0;
-   
 }
 .controls.onof {
    font-size: 1rem;
    bottom: .5rem;
    right: 0;
-   
 }
-.controls.transpose {
+.controls.diatonic {
    font-size: 1rem;
-   top: 0;
+   top: 3rem;
    right: 0;
    
 }
 
 button {
-   color: rgb(200, 200, 200);
+   color: rgb(200, 200, 200);/*important!!! */
    font-weight: 900;
    text-shadow: 0 0 4px;
    padding: .2rem 1rem;
