@@ -144,9 +144,69 @@ function blinkAll(on) {
       }, 800)
    }
 }
+//////////////////////////
+function loadNewKeyOf() {
+
+   // 1. initiate new 'newTonality' array where the new tonality will be stored
+   let newTonality = [];
+   // 2. make list and store all the pointers (src attribute values) into an array and iterate trough them
+   let srcPointersList = [
+      {src: 'samples/01E2.mp3', name: 'E' },
+      {src: 'samples/02F2.mp3', name: 'F' },
+      {src: 'samples/03Gb2.mp3', name: 'G&#9837;' },
+      {src: 'samples/04G2.mp3', name: 'G' },
+      {src: 'samples/05Ab2.mp3', name: 'A&#9837;' },
+      {src: 'samples/06A2.mp3', name: 'A' },
+      {src: 'samples/07Bb2.mp3', name: 'B&#9837;' },
+      {src: 'samples/08B2.mp3', name: 'B' },
+      {src: 'samples/09C3.mp3', name: 'C' },
+      {src: 'samples/10Db3.mp3', name: 'D&#9837;' },
+      {src: 'samples/11D3.mp3', name: 'D' },
+      {src: 'samples/12Eb3.mp3', name: 'E&#9837;' },
+      {src: 'samples/13E3.mp3', name: '' },
+      {src: 'samples/14F3.mp3', name: '' },
+      {src: 'samples/15Gb3.mp3', name: '' },
+      {src: 'samples/16G3.mp3', name: '' },
+      {src: 'samples/17Ab3.mp3', name: '' },
+      {src: 'samples/18A3.mp3', name: '' },
+      {src: 'samples/19Bb3.mp3', name: '' },
+      {src: 'samples/20B3.mp3', name: '' },
+      {src: 'samples/21C4.mp3', name: '' },
+      {src: 'samples/22Db4.mp3', name: '' },
+      {src: 'samples/23D4.mp3', name: '' },
+      {src: 'samples/24Eb4.mp3', name: '' },
+      {src: 'samples/25E4.mp3', name: '' },
+      {src: 'samples/26F4.mp3', name: '' },
+   ] 
+   // 3. get index of new tonality - indexOf()
+   let current_keyOf = 'E&#9837;'//temporary hypotethical
+   let startIndex_of_src = srcPointersList.findIndex(item => item.name == current_keyOf)
+   // console.log(test)
+   // 4. isolate attributes (src) and push them into ->
+   let newList = srcPointersList.slice(startIndex_of_src, startIndex_of_src + 15);
+   // 5. newTonality.push() all samples (attribute src='string') from that index to the length of current key (15 notes)
+   newList.map(item => newTonality.push(item.src));
+   console.log(newTonality)
+   
+   // 6. construct nested for loop and set new attributes
+   let samples = document.querySelectorAll('audio');
+   console.log(samples)
+
+   for (let i = 0; i < samples.length; i++) {
+      for (let j = 0; j < newTonality.length; j++) {
+         samples[i].setAttribute('src', `${newTonality[0]}`)
+      }
+      
+   }
+   console.log(samples)
+   
+}
+/////////////////////////
+
+
 // +++++++++++++++++++++++
 let keyOfIndex = 0;
-let keyOfArr = ['C&nbsp;', 'D&#9837;','D', 'E&#9837;', 'E', 'F', 'G&#9837;', 'G', 'A&#9837;', 'A', 'B&#9837;', 'B'];
+let keyOfArr = ['C', 'D&#9837;','D', 'E&#9837;', 'E', 'F', 'G&#9837;', 'G', 'A&#9837;', 'A', 'B&#9837;', 'B'];
 function transposeKeyOf() {
    if (getComputedStyle(document.
       getElementById('diatonic-toggle')).color == 'rgb(200, 200, 200)') return;
@@ -157,7 +217,7 @@ function transposeKeyOf() {
    // trainer display corresponding tonalities   
    keyOfIndex += 1;
    if (keyOfIndex == keyOfArr.length) keyOfIndex = 0;
-   document.getElementById('key-of').innerHTML = keyOfArr[keyOfIndex];
+   let current_keyOf = document.getElementById('key-of').innerHTML = keyOfArr[keyOfIndex];
    
    let trans_button = document.getElementById('transpose-toggle');
    if (keyOfIndex !== 0) {
