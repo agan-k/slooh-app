@@ -35,27 +35,25 @@ function validateInput(e) {
 
 // +++++++++++++++++++++++
 function toggleTendency() {
-   let cKey = document.getElementById('C');
+   let cKey = document.querySelector(`.key[data-key='65']`);
    const piano = document.querySelector('.piano');
    piano.classList.toggle('tendency-notes');
    const button = document.getElementById('tendency')
    if (getComputedStyle(button).color == 'rgb(200, 200, 200)') {
       button.style.color = 'red';
       cKey.style.color = 'rgb(163, 231, 240)';
+   } else {
+      location.reload();
    }
-   // else {
-   //    location.reload();
-   // }
 }
+
 // +++++++++++++++++++++++++++
 let count = -1;
 // ++++++++++++++++++++++++++++
 function playTendencyNotes(e) {
-   console.log(e.keyCode)
    if (e.type == 'keydown' && e.keyCode.toString() !== '65') return;
    
    const chromatic_scale = document.querySelectorAll('audio');
-   console.log(chromatic_scale[1])
       
    let refference_note;
    if (e.type == 'keydown') {
@@ -75,75 +73,64 @@ function playTendencyNotes(e) {
             chromatic_scale[tendency_pair[1]].currentTime = 0;
          }, 700);
       }, 800);
-   
-   
-   
-   
-   
-   
-   
-   
-   // ///////////////////////////////////////////////////////////////
-   // ++ pool for diatonic scale (notes, octave minus the root and plus maj9th) ++
-   let diatonic_scale = [];
-   // iterate trough chromatic scale, 
-   for (let i = 1; i < 9; i++) {//start on 2nd index (i=1) to skip the unison
-      diatonic_scale.push(chromatic_scale[i]);
-   }
-   // /////////////////////////////////////////////////////////////////
 }
-
-// +++++++++++++++++++
+// +++++++++++++++++++++++++
+function inputTypeValue(e) {
+   let event;
+   if (e.type == 'keydown') {
+      event = e.keyCode.toString();
+   } else if (e.type == 'click') {
+      event = e.target.getAttribute('data-key')
+   }
+   return event;
+}
+// ++++++++++++++++++++
 function playPiano(e) {
    if (e.repeat) return; // stop event 'keydown' from continuous fireing
    //user triggers second ('a guess') event after blinkAll() is called and thus calls evaluateGuess(e)
    if (document.querySelector('.blink')) return evaluateGuess(e);
+   // if trainer active but refference key NOT 'Do', exit (mute other piano keys).
+   if (inputTypeValue(e) !== '65' &&
+      document.querySelector('.piano.et-mode')) return;
+   console.log(inputTypeValue(e))
    getPianoSound(e);
    pressPianoKey(e);
+   //display current solfege
+   let current_note_display = document.getElementById('current-note')
+   displaySolfege(e, current_note_display);
+   //go to tendency mode
    if (document.querySelector('.piano.tendency-notes')) return playTendencyNotes(e);
-   if (!document.querySelector('.piano.et-mode')) return; // if e-trainer mode not active, exit function
+   // if e-trainer mode not active, exit function
+   if (!document.querySelector('.piano.et-mode')) return;
    let range = setRange(); 
    playRandomPitch(range);
    blinkAll();
 }
 
 // ++++++++++++++++++++++++++++++++++
-function displayInOut(display, src) {
-   if (src.charAt(11) !== 'b') {
-      src = src.charAt(10);
-   } else {
-      src = src.charAt(10) + 'b';
+function displaySolfege(e, display) {
+   let src;
+   if (e.type == 'keydown') {
+      src = document.querySelector(`.key[data-key='${e.keyCode}']`).getAttribute('id');
+   } else if (e.type = 'click') {
+      src = e.target.getAttribute('id');
    };
    display.innerHTML = src;
 }
 
 // ++++++++++++++++++++++++
 function getPianoSound(e) {
-   let pianoSound;
-   if (e.type == 'keydown') {
-      pianoSound = document.
-         querySelector(`audio[data-key="${e.keyCode}"]`);
-   } else if (e.type == 'click') {
-      pianoSound = document.
-         querySelector(`audio[data-key="${e.target.getAttribute("data-key")}"]`);
-   }
+   let pianoSound = document.
+      querySelector(`audio[data-key="${inputTypeValue(e)}"]`);
    if (!pianoSound) return; // ignore comp keys without audio
    pianoSound.currentTime = 0;// don't wait for the entire audio sample to ring out
-   pianoSound.play();
-   //+++ display current note
-   let current_note = document.querySelector('#current-note');
-   let current_note_src = pianoSound.getAttribute('src')
-   displayInOut(current_note, current_note_src)
+   pianoSound.play();   
 }
 
 // ++++++++++++++++++++++++
 function pressPianoKey(e) {
-   let pianoKey;
-   if (e.type == 'keydown') {
-      pianoKey = document.querySelector(`.key[data-key="${e.keyCode}"]`);
-   } else if (e.type == 'click') {
-      pianoKey = e.target;
-   }
+   let pianoKey = document.querySelector(`.key[data-key="${inputTypeValue(e)}"]`)
+   // hold piano keys down util release
    pianoKey.classList.add('finger-down');
    if (e.type == 'keydown') {
       let pressedKeys = document.querySelectorAll('.key')
@@ -184,8 +171,8 @@ function playRandomPitch(range) {
    for (let i = 1; i < 9; i++) {//start on 2nd index (i=1) to skip the unison
       diatonic_scale.push(chromatic_scale[i]);
    }
-   let src = diatonic_scale.map(item => item.attributes[1].value);
-   console.log(src)
+   // let src = diatonic_scale.map(item => item.attributes[1].value);
+   // console.log(src)
    // console.log(chromatic_scale)
    // let i = 0;
    // while (i < chromatic_scale.length) {
@@ -321,7 +308,7 @@ function transposeKeyOf() {
 
 // +++++++++++++++++++++++
 function toggleDiatonic() {
-   let cKey = document.getElementById('C');
+   let cKey = document.querySelector(`.key[data-key='65']`);
    if (getComputedStyle(document.
       getElementById('toggle-on-off')).color == 'rgb(200, 200, 200)') return;
    let key_of = document.getElementById('key-of');
@@ -337,7 +324,7 @@ function toggleDiatonic() {
 }
 // +++++++++++++++++++++
 function toggleOnOff() {
-   let cKey = document.getElementById('C');
+   let cKey = document.querySelector(`.key[data-key='65']`);
    let on = 'power-on';
    const piano = document.querySelector('.piano');
    piano.classList.toggle('et-mode');
@@ -352,7 +339,6 @@ function toggleOnOff() {
 }
 // ++++++++++++++++++++++++
 function evaluateGuess(e) {
-   console.log(e)
    let test_note = _TEST_NOTE.getAttribute('data-key');
    let correct_answer;
    let wrong_answer;
@@ -368,18 +354,13 @@ function evaluateGuess(e) {
       guess = e.target.getAttribute("data-key");
       stop_blink; 
    }
-   
    // +++display corresponding user input+++
    let display_guess = document.getElementById('test-note');
    // pass user input (guess)
-   let src_of_guess = document.querySelector(`audio[data-key="${guess}"]`).getAttribute('src')
-   displayInOut(display_guess, src_of_guess )
-   
-   // +++compare user input with correct_note+++
-   // use test_note to assign value to correct_note source
-   let correct_note = document.getElementById('correct-note')
-   let corr_note_src = document.querySelector(`audio[data-key="${test_note}"]`).getAttribute('src');
-   displayInOut(correct_note, corr_note_src)
+   displaySolfege(e, display_guess )
+   // compare user input with correct_note
+   let display_correct = document.getElementById('correct-note')
+   displaySolfege(e, display_correct)
 
    //+++color user input acordingly+++
    if (guess !== test_note) {
@@ -390,9 +371,9 @@ function evaluateGuess(e) {
 
    // these values of 'answers' only to be displayed for comparing user's input.
    correct_answer = document.
-   querySelector(`audio[data-key="${test_note}"]`).getAttribute('id');
+   querySelector(`.key[data-key="${test_note}"]`).getAttribute('id');
    wrong_answer = document.
-   querySelector(`audio[data-key="${guess}"]`).getAttribute('id');
+   querySelector(`.key[data-key="${guess}"]`).getAttribute('id');
    
    // RESULT OUTPUT
    let para = document.createElement("P");
