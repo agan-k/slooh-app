@@ -51,7 +51,7 @@ html {
    /* text-shadow: 0 0 .5rem black; */
 }
 #C {
-    /* background: rgb(212, 190, 77); */
+    /* background: rgb(163, 231, 240); */
 
  }
  /* ++++++++++++++++++++ */
@@ -271,7 +271,7 @@ html {
 }
 .controls.transpose {
    font-size: 1rem;
-   top: 0rem;
+   top: 3rem;
    right: 0;
 }
 .controls.onof {
@@ -281,7 +281,7 @@ html {
 }
 .controls.diatonic {
    font-size: 1rem;
-   top: 3rem;
+   top: 0rem;
    right: 0;
    
 }

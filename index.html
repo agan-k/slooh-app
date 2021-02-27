@@ -49,7 +49,7 @@
                <audio data-key="74" src="samples/20B3.mp3"></audio>
             </div>
             
-            <div data-key="75" class="key" id='C' tabindex="-1">
+            <div data-key="75" class="key" tabindex="-1">
                <kbd>K</kbd>
                <audio data-key="75" src="samples/21C4.mp3"></audio>
             </div>
@@ -123,21 +123,22 @@
                      <div id='v-line'></div>
                      <span class='controls keyof'>
                      </span>
-                     <span class='controls transpose'>
-                        <!-- transpose&nbsp;<button  class='button' id='transpose-toggle' 
-                        type='button' 
-                        onclick="loadNewKeyOf()">+</button> -->
-                        transpose&nbsp;<button  class='button' id='transpose-toggle' 
-                        type='button' 
-                        onclick="transposeKeyOf()">+</button>
-                     </span>
                      <span class='controls diatonic'>
                         diatonic&nbsp;<button  class='button' id='diatonic-toggle' 
                         type='button' onclick="toggleDiatonic()">-</button>
                      </span>
+                     <span class='controls transpose'>
+                        transpose&nbsp;<button  class='button' id='transpose-toggle' 
+                        type='button' 
+                        onclick="transposeKeyOf()">-</button>
+                     </span>
                      <span class='controls onof'>
                         ON/OFF&nbsp;<button  class='button' id='toggle-on-off' 
                         type='button' onclick="toggleOnOff()">-</button>
+                     </span>
+                     <span class='controls tendency'>
+                        TN&nbsp;<button  class='button' id='tendency' 
+                        type='button' onclick="toggleTendency()">-</button>
                      </span>
                </div>
             </div>
