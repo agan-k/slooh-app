@@ -33,47 +33,41 @@ function validateInput(e) {
    }
 }
 
-// +++++++++++++++++++++++
-function toggleTendency() {
-   let cKey = document.querySelector(`.key[data-key='65']`);
-   const piano = document.querySelector('.piano');
-   piano.classList.toggle('tendency-notes');
-   const button = document.getElementById('tendency')
-   if (getComputedStyle(button).color == 'rgb(200, 200, 200)') {
-      button.style.color = 'red';
-      cKey.style.color = 'rgb(163, 231, 240)';
-   } else {
-      location.reload();
-   }
-}
-
 // +++++++++++++++++++++++++++
 let count = -1;
 // ++++++++++++++++++++++++++++
 function playTendencyNotes(e) {
-   if (e.type == 'keydown' && e.keyCode.toString() !== '65') return;
+   if (inputTypeValue(e) !== '65') return;
    
    const chromatic_scale = document.querySelectorAll('audio');
-      
-   let refference_note;
-   if (e.type == 'keydown') {
-      refference_note = document.querySelector(`audio[data-key='${e.keyCode}']`)
-   } else if (e.type == 'click') { 
-      refference_note = document.querySelector(`audio[data-key='${e.target.getAttribute('data-key')}']`)
-   }
-   let tendency_list = [[1, 0], [3,2], [5,4], [6,7], [4, 0]];//tendency pairs represented in chromatic scale
+   //tendency pairs represented in chromatic scale
+   let tendency_list = [[1, 0], [3, 2], [5, 4], [6, 7], [4, 0]];
    count += 1;
    if (count == tendency_list.length) count = 0;
-   let tendency_pair = tendency_list[count]
+   let tendency_pair = tendency_list[count];
+   let data_key0 = chromatic_scale[tendency_pair[0]].getAttribute('data-key');
+   let data_key1 = chromatic_scale[tendency_pair[1]].getAttribute('data-key');
+   let tendency1_display = document.getElementById('test-note');
+   let tendency2_display = document.getElementById('correct-note')
       setTimeout(function() {
          chromatic_scale[tendency_pair[0]].play()
          chromatic_scale[tendency_pair[0]].currentTime = 0;
-         setTimeout(function() {
+         //display tendency pair
+         tendency1_display.innerHTML = document.
+            querySelector(`.key[data-key='${data_key0}']`).getAttribute('id');
+         tendency1_display.style.color = 'rgb(231, 100, 100)'
+         setTimeout(function () {
+            //display tendency pair
+            tendency2_display.innerHTML = document.
+               querySelector(`.key[data-key='${data_key1}']`).getAttribute('id');
+            tendency2_display.style.color = 'rgb(163, 231, 240)'
             chromatic_scale[tendency_pair[1]].play()
             chromatic_scale[tendency_pair[1]].currentTime = 0;
          }, 700);
-      }, 800);
+      }, 700);
+
 }
+
 // +++++++++++++++++++++++++
 function inputTypeValue(e) {
    let event;
@@ -89,23 +83,42 @@ function playPiano(e) {
    if (e.repeat) return; // stop event 'keydown' from continuous fireing
    //user triggers second ('a guess') event after blinkAll() is called and thus calls evaluateGuess(e)
    if (document.querySelector('.blink')) return evaluateGuess(e);
-   // if trainer active but refference key NOT 'Do', exit (mute other piano keys).
+   // if Tendency Mode active but refference key NOT 'Do'(C), exit (mute other piano keys).
    if (inputTypeValue(e) !== '65' &&
-      document.querySelector('.piano.et-mode')) return;
-   console.log(inputTypeValue(e))
+   document.querySelector('.piano.tendency-mode')) return;
    getPianoSound(e);
    pressPianoKey(e);
    //display current solfege
    let current_note_display = document.getElementById('current-note')
    displaySolfege(e, current_note_display);
-   //go to tendency mode
-   if (document.querySelector('.piano.tendency-notes')) return playTendencyNotes(e);
-   // if e-trainer mode not active, exit function
-   if (!document.querySelector('.piano.et-mode')) return;
-   let range = setRange(); 
+   //go to Tendency Mode
+   if (document.querySelector('.piano.tendency-mode')) return playTendencyNotes(e);
+   // if chromatic mode not active, exit function
+   if (!document.querySelector('.piano.ear-mode')) return;
+   let range = setRange(); //set by either diatonic or chromatic toggle
    playRandomPitch(range);
    blinkAll();
 }
+// function playPiano(e) {
+//    if (e.repeat) return; // stop event 'keydown' from continuous fireing
+//    //user triggers second ('a guess') event after blinkAll() is called and thus calls evaluateGuess(e)
+//    if (document.querySelector('.blink')) return evaluateGuess(e);
+//    // if trainer active but refference key NOT 'Do', exit (mute other piano keys).
+//    if (inputTypeValue(e) !== '65' &&
+//       document.querySelector('.piano.et-mode')) return;
+//    getPianoSound(e);
+//    pressPianoKey(e);
+//    //display current solfege
+//    let current_note_display = document.getElementById('current-note')
+//    displaySolfege(e, current_note_display);
+//    //go to tendency mode
+//    if (document.querySelector('.piano.tendency-notes')) return playTendencyNotes(e);
+//    // if e-trainer mode not active, exit function
+//    if (!document.querySelector('.piano.et-mode')) return;
+//    let range = setRange(); 
+//    playRandomPitch(range);
+//    blinkAll();
+// }
 
 // ++++++++++++++++++++++++++++++++++
 function displaySolfege(e, display) {
@@ -147,15 +160,21 @@ function pressPianoKey(e) {
 
 // ++++++++++++++++++
 function setRange() {
-   let range; //range represents the pool from which test note is picked. (the pool can be chromatic, diatonic etc.)
-   let button = document.getElementById('diatonic-toggle');
-      if (getComputedStyle(button).color == 'rgb(200, 200, 200)') {
+   //range represents the pool from which test note 
+   // is picked. (the pool can be chromatic, diatonic etc.)
+   let range;
+   let diatonic = document.getElementById('toggle-diatonic');
+   let chromatic = document.getElementById('toggle-chromatic');
+   if (document.querySelector('.piano.ear-mode') &&
+      getComputedStyle(diatonic).color == 'rgb(200, 200, 200)') {
          range = 15;
-      } else if (getComputedStyle(button).color == 'rgb(0, 128, 0)') {
+   } else if (document.querySelector('.piano.ear-mode') &&
+      getComputedStyle(button).color == 'rgb(0, 128, 0)') {
          range = 8;//nine notes minus the root
       }
    return range;
 }
+
 // +++++++++++++++++++++++++++++
 function playRandomPitch(range) {
    // random index to pick random note
@@ -171,15 +190,6 @@ function playRandomPitch(range) {
    for (let i = 1; i < 9; i++) {//start on 2nd index (i=1) to skip the unison
       diatonic_scale.push(chromatic_scale[i]);
    }
-   // let src = diatonic_scale.map(item => item.attributes[1].value);
-   // console.log(src)
-   // console.log(chromatic_scale)
-   // let i = 0;
-   // while (i < chromatic_scale.length) {
-   //    console.log(chromatic_scale[i])
-   //    i++
-   // }
-   // debugger
    if (range == 15) {
       _TEST_NOTE = chromatic_scale[random_index];
    } else if (range == 8) {
@@ -190,11 +200,10 @@ function playRandomPitch(range) {
       // display CTA (question mark ?) in html element
       document.querySelector('#test-note').innerHTML = "?"
    }, 800) 
-   console.log(_TEST_NOTE)
 }
+
 // ++++++++++++++++++
 function blinkAll(on) {
-
    const blinking_keys = document.querySelectorAll('.key');
    if (on == 'power-on') {
       let powerOnBlink = setInterval(() => {
@@ -203,11 +212,9 @@ function blinkAll(on) {
             blinking_keys.forEach(item => item.classList.remove('blink'))
          }, 50);
       }, 150);
-      
       setTimeout(function () {
          clearInterval(powerOnBlink)
       }, 400)
-     
    } else {
       setTimeout(function() {
          blinking_keys.forEach(item => item.classList.add('blink'))
@@ -224,25 +231,30 @@ function constructScale(chromaticArr, scaleIndexArr) {
    }
    return scale;
 }
+
 // +++++++++++++++++++++++
 // index of the starting key (C) in Transpose mode
 let keyOfIndex = 0;
 // list of tonalities (keyOf). the hex is for the flat (b) sign
 let keyOfArr = ['C', 'D&#9837;', 'D', 'E&#9837;', 'E', 'F', 'G&#9837;', 'G', 'A&#9837;', 'A', 'B&#9837;', 'B'];
-// let keyOfArr = ['C', '^m2', '^M2nd', '^m3rd', 'E', 'F', 'G&#9837;', 'G', 'A&#9837;', 'A', 'B&#9837;', 'B'];
 // ++++++++++++++++++++++
-function transposeKeyOf() {
+function toggleTranspose() {
    if (getComputedStyle(document.
       getElementById('toggle-on-off')).color == 'rgb(200, 200, 200)') return;//grey color (off) - exit
-// trainer display corresponding tonalities   
+   // trainer display corresponding tonalities   
    keyOfIndex += 1;// increase index to switch to the next tonality
    if (keyOfIndex == keyOfArr.length) keyOfIndex = 0;// circle back to the starting tonality (C)
-   // display current tonality in the 'Trainer'
+
+   // display current tonality in the 'Trainer' and color them
    let current_keyOf = document.getElementById('key-of').innerHTML = keyOfArr[keyOfIndex];
-   //set 
-   let trans_button = document.getElementById('transpose-toggle');
+   // document.getElementById('key-of').style.color = 'rgb(200, 200, 200)';
+   document.getElementById('Do').style.background = 'rgb(200, 200, 200)'//piano key root
+   //color transposed elements
    if (keyOfIndex !== 0) {
-      trans_button.style.color = 'rgb(235, 218, 132)';
+      console.log(keyOfIndex)
+      document.getElementById('toggle-transpose').style.color = 'rgb(235, 218, 132)';//button
+      document.getElementById('Do').style.background = 'rgb(235, 218, 132)'//piano key root
+      document.getElementById('current-note').style.color = 'rgb(235, 218, 132)';//font
    };
 
    // ++LOAD AUDIO SAMPLES FOR NEW TE TONALITY++
@@ -296,42 +308,77 @@ function transposeKeyOf() {
          ebony_keys.push(oneOctaveSrc[i])
       }
    }
-      ebony_keys.map(item => newTonality.push(item))
+   ebony_keys.map(item => newTonality.push(item))
       
    // 6. construct nested for loop and set new attributes
    let samples = document.querySelectorAll('audio');
    for (let i = 0; i < newTonality.length; i++) {
    samples[i].setAttribute('src', `${newTonality[i]}`)
    };
-   
+}
+
+// +++++++++++++++++++++++++
+function toggleChromatic() {
+   if (getComputedStyle(document.
+      getElementById('toggle-on-off')).color == 'rgb(200, 200, 200)') return;
+   const button = document.getElementById('toggle-chromatic');
+   const piano = document.querySelector('.piano');
+   piano.classList.toggle('ear-mode');
+   if (getComputedStyle(button).color == 'rgb(200, 200, 200)') {
+      button.style.color = 'green'
+   } else {
+      button.style.color = 'rgb(200, 200, 200)';
+  }
 }
 
 // +++++++++++++++++++++++
 function toggleDiatonic() {
-   let cKey = document.querySelector(`.key[data-key='65']`);
    if (getComputedStyle(document.
       getElementById('toggle-on-off')).color == 'rgb(200, 200, 200)') return;
-   let key_of = document.getElementById('key-of');
-   let button = document.getElementById('diatonic-toggle');
+   // let cKey = document.querySelector(`.key[data-key='65']`);
+   const piano = document.querySelector('.piano');
+   piano.classList.toggle('ear-mode');
+   let button = document.getElementById('toggle-diatonic');
    if (getComputedStyle(button).color == 'rgb(200, 200, 200)') {
       button.style.color = 'green';
-      key_of.innerHTML = 'C';
-      cKey.style.background = 'rgb(235, 218, 132)';
+      // cKey.style.background = 'rgb(235, 218, 132)';
    } else {
       button.style.color = 'rgb(200, 200, 200)';
-      location.reload();
    };
 }
+
+// +++++++++++++++++++++++
+function toggleTendency() {
+   if (getComputedStyle(document.
+      getElementById('toggle-on-off')).color == 'rgb(200, 200, 200)') return;
+   let cKey = document.querySelector(`.key[data-key='65']`);
+   console.log(cKey)
+   const piano = document.querySelector('.piano');
+   piano.classList.toggle('tendency-mode');
+   const button = document.getElementById('toggle-tendency')
+   if (getComputedStyle(button).color == 'rgb(200, 200, 200)') {
+      button.style.color = 'rgb(163, 231, 240)';
+   } else {
+      button.style.color = 'rgb(200, 200, 200)';
+      document.getElementById('test-note').innerHTML = '';
+      document.getElementById('correct-note').innerHTML = '';
+      
+   }
+}
+
 // +++++++++++++++++++++
 function toggleOnOff() {
    let cKey = document.querySelector(`.key[data-key='65']`);
    let on = 'power-on';
+   let key_of = document.getElementById('key-of');
    const piano = document.querySelector('.piano');
-   piano.classList.toggle('et-mode');
+   // piano.classList.toggle('et-mode');
    const button = document.getElementById('toggle-on-off');
    if (getComputedStyle(button).color == 'rgb(200, 200, 200)') {
       button.style.color = 'red';
-      cKey.style.background = 'rgb(163, 231, 240)';
+      cKey.style.background = 'rgb(235, 218, 132)';
+      key_of.innerHTML = 'C';
+      key_of.style.color = 'rgb(235, 218, 132)';
       blinkAll(on);
    } else {
       location.reload();

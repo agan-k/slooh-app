@@ -121,24 +121,29 @@
                      <h3>trainer</h3>
                      <h2 id='key-of'></h2>
                      <div id='v-line'></div>
+                     <div id='h-line'></div>
                      <span class='controls keyof'>
                      </span>
+                     <span class='controls transpose'>
+                        &nbsp;<button  class='button' id='toggle-transpose' 
+                        type='button' 
+                        onclick="toggleTranspose()">+</button>
+                     </span>
+                     <span class='controls chromatic'>
+                        chromatic&nbsp;<button  class='button' id='toggle-chromatic' 
+                        type='button' onclick="toggleChromatic()">-</button>
+                     </span>
                      <span class='controls diatonic'>
-                        diatonic&nbsp;<button  class='button' id='diatonic-toggle' 
+                        diatonic&nbsp;<button  class='button' id='toggle-diatonic' 
                         type='button' onclick="toggleDiatonic()">-</button>
                      </span>
-                     <span class='controls transpose'>
-                        transpose&nbsp;<button  class='button' id='transpose-toggle' 
-                        type='button' 
-                        onclick="transposeKeyOf()">-</button>
+                     <span class='controls tendency'>
+                        tendency&nbsp;<button  class='button' id='toggle-tendency' 
+                        type='button' onclick="toggleTendency()">-</button>
                      </span>
                      <span class='controls onof'>
                         ON/OFF&nbsp;<button  class='button' id='toggle-on-off' 
                         type='button' onclick="toggleOnOff()">-</button>
-                     </span>
-                     <span class='controls tendency'>
-                        TN&nbsp;<button  class='button' id='tendency' 
-                        type='button' onclick="toggleTendency()">-</button>
                      </span>
                </div>
             </div>

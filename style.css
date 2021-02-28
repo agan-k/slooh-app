@@ -221,10 +221,12 @@ html {
    .cont.selector h2 {
       line-height: 7rem;/* important */
       letter-spacing: -1rem;/* important */
-      margin-top: 2.5rem;/* important */
+      margin-top: 3rem;/* important */
+      margin-left: 2rem;
       color: rgb(235, 218, 132);
       font-size: 3.5rem;
-      text-align: center;
+      text-align: left;
+      /* padding-left: .5rem; */
    }
    .cont h3 {
       text-align: center;
@@ -255,35 +257,53 @@ html {
       transform: rotate(90deg);
       opacity: .1;
    } 
+   .cont.selector #h-line {
+      color: rgb(231, 100, 100);
+      position: absolute;
+      top: 7.1rem;
+      right: 1.6rem;
+      height: 1px;
+      background: grey;
+      width: 30%;
+      /* transform: rotate(90deg); */
+      opacity: .1;
+   } 
 .controls {
    position: absolute;
    display: block;
-   /* display: block; */
    margin-right: .5rem;
 }
 .controls.keyof {
-   text-align: center;
-   top: 15%;
-   right: 0%;
    opacity: .4;
    width: min-content;
    font-family: monospace;
 }
 .controls.transpose {
    font-size: 1rem;
-   top: 3rem;
+   bottom: 3rem;
+   right: 5rem;
+}
+.controls.chromatic {
+   font-size: 1rem;
+   top: 0rem;
+   right: 0;
+   
+}
+.controls.diatonic {
+   font-size: 1rem;
+   top: 2rem;
+   right: 0;
+   
+}
+.controls.tendency {
+   font-size: 1rem;
+   top: 4rem;
    right: 0;
 }
 .controls.onof {
    font-size: 1rem;
    bottom: .5rem;
    right: 0;
-}
-.controls.diatonic {
-   font-size: 1rem;
-   top: 0rem;
-   right: 0;
-   
 }
 
 button {
@@ -296,6 +316,10 @@ button {
    vertical-align: text-bottom;  
    border-radius: 2px;
    cursor: pointer;
+}
+.transpose button {
+   font-weight: 100;
+   padding: .1rem .6rem;
 }
 .switch-logo {
    width: 92%;
