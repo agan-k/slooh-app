@@ -96,14 +96,16 @@ html {
    box-shadow: 0 11px 1px rgb(0, 0, 0);
    height: 14rem;
    margin-top: 0rem;
+ }.ebony .finger-down kbd {
+   margin-top: 1rem;
  }
  kbd {
    display: block;
    font-size: 1rem;
-   margin-top: 1rem;
+   margin-top: 0rem;
  }
  .ivory kbd {
-   margin-top: 2rem;
+   margin-top: 1rem;
  }
 
  /* +++++==========++++++ */
