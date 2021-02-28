@@ -80,12 +80,17 @@ function inputTypeValue(e) {
 }
 // ++++++++++++++++++++
 function playPiano(e) {
+   //clear display
+   document.getElementById('test-note').innerHTML = '';
+   document.getElementById('correct-note').innerHtml = '';
+   
    if (e.repeat) return; // stop event 'keydown' from continuous fireing
-   //user triggers second ('a guess') event after blinkAll() is called and thus calls evaluateGuess(e)
+   // user triggers second event ('guess') after blinkAll() is called and thus calls evaluateGuess(e)
    if (document.querySelector('.blink')) return evaluateGuess(e);
-   // if Tendency Mode active but refference key NOT 'Do'(C), exit (mute other piano keys).
+   // If refference key NOT 'Do'(C) and Tendency Mode active, exit (mute other piano keys).
    if (inputTypeValue(e) !== '65' &&
-   document.querySelector('.piano.tendency-mode')) return;
+      document.querySelector('.piano.tendency-mode')) return;
+   //piano sounds and keys move
    getPianoSound(e);
    pressPianoKey(e);
    //display current solfege
@@ -94,31 +99,11 @@ function playPiano(e) {
    //go to Tendency Mode
    if (document.querySelector('.piano.tendency-mode')) return playTendencyNotes(e);
    // if chromatic mode not active, exit function
-   if (!document.querySelector('.piano.ear-mode')) return;
+   if (!document.querySelector('.chromatic-mode') && !document.querySelector('.diatonic-mode')) return;
    let range = setRange(); //set by either diatonic or chromatic toggle
    playRandomPitch(range);
    blinkAll();
 }
-// function playPiano(e) {
-//    if (e.repeat) return; // stop event 'keydown' from continuous fireing
-//    //user triggers second ('a guess') event after blinkAll() is called and thus calls evaluateGuess(e)
-//    if (document.querySelector('.blink')) return evaluateGuess(e);
-//    // if trainer active but refference key NOT 'Do', exit (mute other piano keys).
-//    if (inputTypeValue(e) !== '65' &&
-//       document.querySelector('.piano.et-mode')) return;
-//    getPianoSound(e);
-//    pressPianoKey(e);
-//    //display current solfege
-//    let current_note_display = document.getElementById('current-note')
-//    displaySolfege(e, current_note_display);
-//    //go to tendency mode
-//    if (document.querySelector('.piano.tendency-notes')) return playTendencyNotes(e);
-//    // if e-trainer mode not active, exit function
-//    if (!document.querySelector('.piano.et-mode')) return;
-//    let range = setRange(); 
-//    playRandomPitch(range);
-//    blinkAll();
-// }
 
 // ++++++++++++++++++++++++++++++++++
 function displaySolfege(e, display) {
@@ -163,14 +148,10 @@ function setRange() {
    //range represents the pool from which test note 
    // is picked. (the pool can be chromatic, diatonic etc.)
    let range;
-   let diatonic = document.getElementById('toggle-diatonic');
-   let chromatic = document.getElementById('toggle-chromatic');
-   if (document.querySelector('.piano.ear-mode') &&
-      getComputedStyle(diatonic).color == 'rgb(200, 200, 200)') {
+   if (document.querySelector('.piano.chromatic-mode')) {
          range = 15;
-   } else if (document.querySelector('.piano.ear-mode') &&
-      getComputedStyle(button).color == 'rgb(0, 128, 0)') {
-         range = 8;//nine notes minus the root
+   } else if (document.querySelector('.piano.diatonic-mode')) {
+         range = 9;//nine notes minus the root
       }
    return range;
 }
@@ -182,19 +163,27 @@ function playRandomPitch(range) {
    if (random_index == 0) random_index = 1; //avoid unison
    
    // pool for chromatic scale (all the 15 notes, octave plus two)
-   const chromatic_scale = document.querySelectorAll('audio');
+   const all_notes = document.querySelectorAll('audio');
+   let chromatic_scale = [];
+   // take out the root
+   for (let i = 0; i < 15; i++) {//start on 2nd index
+      chromatic_scale.push(all_notes[i])
+   }
    
    // ++ pool for diatonic scale (notes, octave minus the root and plus maj9th) ++
    let diatonic_scale = [];
    // iterate trough chromatic scale, 
-   for (let i = 1; i < 9; i++) {//start on 2nd index (i=1) to skip the unison
+   for (let i = 0; i < 9; i++) {
       diatonic_scale.push(chromatic_scale[i]);
    }
    if (range == 15) {
       _TEST_NOTE = chromatic_scale[random_index];
-   } else if (range == 8) {
+   } else if (range == 9) {
       _TEST_NOTE = diatonic_scale[random_index];
    }
+   console.log(random_index)
+   console.log(_TEST_NOTE)
+   // debugger
    setTimeout(function () {
       _TEST_NOTE.play();
       // display CTA (question mark ?) in html element
@@ -319,45 +308,71 @@ function toggleTranspose() {
 
 // +++++++++++++++++++++++++
 function toggleChromatic() {
-   if (getComputedStyle(document.
-      getElementById('toggle-on-off')).color == 'rgb(200, 200, 200)') return;
-   const button = document.getElementById('toggle-chromatic');
+   if (!document.querySelector('.on-off')) return;
    const piano = document.querySelector('.piano');
-   piano.classList.toggle('ear-mode');
+   const tendency = document.querySelector('.tendency-mode');
+   const diatonic = document.querySelector('.diatonic-mode');
+   piano.classList.toggle('chromatic-mode');
+   if (tendency) tendency.classList.remove('tendency-mode');
+   if (diatonic) diatonic.classList.remove('diatonic-mode');
+   const button = document.getElementById('toggle-chromatic');
+
+   // button lights on and off
    if (getComputedStyle(button).color == 'rgb(200, 200, 200)') {
-      button.style.color = 'green'
-   } else {
+      button.style.color = 'green';
+      document.getElementById('toggle-tendency').
+         style.color = 'rgb(200, 200, 200)';
+      document.getElementById('toggle-diatonic').
+         style.color = 'rgb(200, 200, 200)';
+   } else if (!document.querySelector('.chromatic-mode')) {
       button.style.color = 'rgb(200, 200, 200)';
   }
 }
 
 // +++++++++++++++++++++++
 function toggleDiatonic() {
-   if (getComputedStyle(document.
-      getElementById('toggle-on-off')).color == 'rgb(200, 200, 200)') return;
+   if (!document.querySelector('.on-off')) return;
    // let cKey = document.querySelector(`.key[data-key='65']`);
-   const piano = document.querySelector('.piano');
-   piano.classList.toggle('ear-mode');
    let button = document.getElementById('toggle-diatonic');
+   const piano = document.querySelector('.piano');
+   const tendency = document.querySelector('.tendency-mode');
+   const chromatic = document.querySelector('.chromatic-mode');
+   piano.classList.toggle('diatonic-mode');
+   if (tendency) tendency.classList.remove('tendency-mode');
+   if (chromatic) chromatic.classList.remove('chromatic-mode');
+
+
+   // button lights on and off
    if (getComputedStyle(button).color == 'rgb(200, 200, 200)') {
       button.style.color = 'green';
+      document.getElementById('toggle-tendency').
+         style.color = 'rgb(200, 200, 200)';
+      document.getElementById('toggle-chromatic').
+         style.color = 'rgb(200, 200, 200)';
       // cKey.style.background = 'rgb(235, 218, 132)';
-   } else {
+   } else if (!document.querySelector('.diatonic-mode')) {
       button.style.color = 'rgb(200, 200, 200)';
    };
 }
 
 // +++++++++++++++++++++++
 function toggleTendency() {
-   if (getComputedStyle(document.
-      getElementById('toggle-on-off')).color == 'rgb(200, 200, 200)') return;
-   let cKey = document.querySelector(`.key[data-key='65']`);
-   console.log(cKey)
-   const piano = document.querySelector('.piano');
-   piano.classList.toggle('tendency-mode');
+   if (!document.querySelector('.on-off')) return;
    const button = document.getElementById('toggle-tendency')
+   const piano = document.querySelector('.piano');
+   const diatonic = document.querySelector('.diatonic-mode');
+   const chromatic = document.querySelector('.chromatic-mode');
+   piano.classList.toggle('tendency-mode');
+   
+   if (diatonic) diatonic.classList.remove('diatonic-mode');
+   if (chromatic) chromatic.classList.remove('chromatic-mode');
+   // button lights on and off
    if (getComputedStyle(button).color == 'rgb(200, 200, 200)') {
-      button.style.color = 'rgb(163, 231, 240)';
+      button.style.color = 'green';
+      document.getElementById('toggle-diatonic').
+         style.color = 'rgb(200, 200, 200)';
+      document.getElementById('toggle-chromatic').
+         style.color = 'rgb(200, 200, 200)';
    } else {
       button.style.color = 'rgb(200, 200, 200)';
       document.getElementById('test-note').innerHTML = '';
@@ -371,10 +386,10 @@ function toggleOnOff() {
    let cKey = document.querySelector(`.key[data-key='65']`);
    let on = 'power-on';
    let key_of = document.getElementById('key-of');
-   const piano = document.querySelector('.piano');
-   // piano.classList.toggle('et-mode');
    const button = document.getElementById('toggle-on-off');
-   if (getComputedStyle(button).color == 'rgb(200, 200, 200)') {
+   const piano = document.querySelector('.piano');
+   piano.classList.toggle('on-off');
+   if (document.querySelector('.on-off')) {
       button.style.color = 'red';
       cKey.style.background = 'rgb(235, 218, 132)';
       key_of.innerHTML = 'C';
