@@ -30,7 +30,7 @@ function invalidInputMessage(valid) {
    }
    else {
       monitor.appendChild(heading);
-      heading.innerHTML = "slooh"
+      heading.innerHTML = "slo͞oh"
    }
 }
 
