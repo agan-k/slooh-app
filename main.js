@@ -181,6 +181,7 @@ function playRandomPitch(range) {
    }
 
    setTimeout(function () {
+      _TEST_NOTE.currentTime = 0;//without it -> 'dead' test note once in a while
       _TEST_NOTE.play();
       // display CTA (question mark ?) in html element
       document.querySelector('#test-note').innerHTML = "?"
