@@ -179,9 +179,7 @@ function playRandomPitch(range) {
    } else if (range == 9) {
       _TEST_NOTE = diatonic_scale[random_index];
    }
-   console.log(random_index)
-   console.log(_TEST_NOTE)
-   // debugger
+
    setTimeout(function () {
       _TEST_NOTE.play();
       // display CTA (question mark ?) in html element
@@ -233,8 +231,7 @@ let keyOfIndex = 0;
 let keyOfArr = ['C', 'D&#9837;', 'D', 'E&#9837;', 'E', 'F', 'G&#9837;', 'G', 'A&#9837;', 'A', 'B&#9837;', 'B'];
 // ++++++++++++++++++++++
 function toggleTranspose() {
-   if (getComputedStyle(document.
-      getElementById('toggle-on-off')).color == 'rgb(200, 200, 200)') return;//grey color (off) - exit
+   if (!document.querySelector('.piano.on-off')) return;// power off - exit
    // trainer display corresponding tonalities   
    keyOfIndex += 1;// increase index to switch to the next tonality
    if (keyOfIndex == keyOfArr.length) keyOfIndex = 0;// circle back to the starting tonality (C)
@@ -312,7 +309,7 @@ function toggleTranspose() {
 
 // +++++++++++++++++++++++++
 function toggleChromatic() {
-   if (!document.querySelector('.on-off')) return;
+   if (!document.querySelector('.piano.on-off')) return;// power off - exit
    const piano = document.querySelector('.piano');
    const tendency = document.querySelector('.tendency-mode');
    const diatonic = document.querySelector('.diatonic-mode');
@@ -335,7 +332,7 @@ function toggleChromatic() {
 
 // +++++++++++++++++++++++
 function toggleDiatonic() {
-   if (!document.querySelector('.on-off')) return;
+   if (!document.querySelector('.piano.on-off')) return;// power off - exit
    // let cKey = document.querySelector(`.key[data-key='65']`);
    let button = document.getElementById('toggle-diatonic');
    const piano = document.querySelector('.piano');
@@ -360,7 +357,7 @@ function toggleDiatonic() {
 
 // +++++++++++++++++++++++
 function toggleTendency() {
-   if (!document.querySelector('.on-off')) return;
+   if (!document.querySelector('.piano.on-off')) return;//power off - exit
    let tendency = true;
    // Display(tendency);
    const button = document.getElementById('toggle-tendency')
